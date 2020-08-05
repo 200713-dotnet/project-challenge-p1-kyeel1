@@ -32,7 +32,7 @@ namespace PizzaStore.Client.Controllers
         }
         public IActionResult Store()
         {
-            return View("Store",new PizzaViewModel());
+            return View("Store",new PizzaViewModel(_db));
         }
         public IActionResult test(){
             return View("Cart");

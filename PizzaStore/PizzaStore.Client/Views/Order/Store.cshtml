@@ -1,12 +1,13 @@
 @model PizzaStore.Client.Models.PizzaViewModel
 
  
-<form action="/order/placeorder"method = "post">
-@foreach(var crust in @Model.Crusts)
-{
-    <input type ="radio" name="CrustInput" value="@crust.Name">@crust.Name
-}
-<select name="size" >
+<form asp-action="placeorder" method="post">
+  @foreach (var crust in @Model.Crusts)
+  {
+    <input type="radio" asp-for="@Model.Crust" value="@crust.Name">
+  }
+
+  <select asp-for="@Model.Size">
     @foreach (var size in @Model.Sizes)
     {
       <option value="@size.Name">@size.Name</option>
@@ -15,29 +16,10 @@
 
   @foreach (var topping in @Model.Toppings)
   {
-    <input type="checkbox" name="selectedtoppings" value="@topping.Name">@topping.Name
-  }
-  <button type="submit">place order</button>
-</form> 
-
-
-@using (Html.BeginForm("PlaceOrder", "Order", null, FormMethod.Post))
-{
+    <input type="checkbox" name="selectedtoppings" id="selectedtoppings" asp-for="SelectedToppings" value="@topping.Name">
+    <label for="selectedtoppings">@topping.Name</label>
     
-    @Html.AntiForgeryToken();
-    foreach (var crust in Model.Crusts)
-    {
-        @Html.RadioButtonFor(m => m.Crust, crust.Name);
-        @Html.DisplayFor(m => m.Crust);
-      
+  }
 
-    }
-
-    @Html.DropDownListFor(m => m.Size,new SelectList(Model.Sizes));
-
-    foreach(var topping in Model.Toppings)
-    {
-        @Html.CheckBoxFor(m => m.SelectedTopping, new { name = "SelectedToppings", value = topping});<p>@topping.Name</p>
-    }
-    <button type="submit">place order</button>
-}    
+  <button type="submit">place order</button>
+</form>

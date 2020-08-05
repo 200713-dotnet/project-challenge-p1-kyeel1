@@ -1,5 +1,6 @@
 using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
+using PizzaStore.Storing;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,26 +11,14 @@ namespace PizzaStore.Client.Models
         public List<CrustModel> Crusts {get;set;}
         public List<SizeModel> Sizes {get;set;}
         public List<ToppingsModel> Toppings {get;set;} 
-        public PizzaViewModel()
+        public PizzaViewModel(PizzaStoreDBContext dbo)
         {
-            var crust = new CrustModel();
-            crust.Name = "thin";
-            crust.Description ="the worst crust ever";
-            Crusts = new List<CrustModel>();
-            Crusts.Add(crust);
-
-            var size = new SizeModel();
-            size.Name = "small";
-            size.Diameter = 12;
-            Sizes = new List<SizeModel>();
-            Sizes.Add(size);
-
-            var topping = new ToppingsModel();
-            topping.Name = "cheese";
-            topping.Description ="the cheesiest of toppings";
-            Toppings= new List<ToppingsModel>();
-            Toppings.Add(topping);
-
+            var cRepo = new CrustRepository(dbo);
+            Crusts = cRepo.GetAll();
+            var sRepo = new SizeRepository(dbo);
+            Sizes = sRepo.GetAll();
+            var tRepo = new ToppingRepository(dbo);
+            Toppings = tRepo.GetAll();
         }
         [Required]
         public string Crust {get;set;}
@@ -37,7 +26,7 @@ namespace PizzaStore.Client.Models
         public string Size {get;set;}
         [Range(1,5)]
         [Required]
-        public List<string> SelectedToppings {get;set;}
+        public List<string> SelectedToppings { get; set; }
         public bool SelectedTopping {get;set;}
 
         public List<PizzaModel> Cart {get;set;}

@@ -1,42 +1,38 @@
+using System.Collections.Generic;
+using System.Linq;
+using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 
 namespace PizzaStore.Storing
 {
     public class SizeRepository : ARepository<SizeModel>
     {
+        PizzaStoreDBContext _db;
+        public SizeRepository(PizzaStoreDBContext dbContext)
+        {
+            _db = dbContext;
+        }
         public void Add(SizeModel t)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Add(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public SizeModel Find(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public SizeModel Find(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public SizeModel Get(int id)
-        {
-            throw new System.NotImplementedException();
+            _db.Sizes.Add(t);
+            _db.SaveChanges();
         }
 
         public SizeModel Get(string name)
         {
-            throw new System.NotImplementedException();
+            var SizeList = _db.Sizes;
+            var query = SizeList.Single(Size => Size.Name ==name);
+            return query;
         }
 
-        public System.Collections.Generic.List<SizeModel> GetAll()
+        public SizeModel Get(int id)
         {
-            throw new System.NotImplementedException();
+            return _db.Sizes.Find(id);
+        }
+
+        public List<SizeModel> GetAll()
+        {
+            return _db.Sizes.ToList();
         }
     }
 }

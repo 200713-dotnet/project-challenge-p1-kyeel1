@@ -11,6 +11,7 @@ using PizzaStore.Storing;
 
 namespace PizzaStore.Client.Controllers
 {
+    [Route("/[controller]/[action]")]
     public class StoreController : Controller
     {
         private readonly PizzaStoreDBContext _db; 

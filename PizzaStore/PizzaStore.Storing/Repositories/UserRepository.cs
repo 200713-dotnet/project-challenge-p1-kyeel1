@@ -1,43 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
+using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 
 namespace PizzaStore.Storing
 {
-    public class UserReposistory : ARepository<UserModel>
+    public class UserRepository : ARepository<UserModel>
     {
+        PizzaStoreDBContext _db;
+        public UserRepository(PizzaStoreDBContext dbContext)
+        {
+            _db = dbContext;
+        }
         public void Add(UserModel t)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Add(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public UserModel Find(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public UserModel Find(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public UserModel Get(int id)
-        {
-            throw new System.NotImplementedException();
+            _db.Users.Add(t);
+            _db.SaveChanges();
         }
 
         public UserModel Get(string name)
         {
-            throw new System.NotImplementedException();
+            var UserList = _db.Users;
+            var query = UserList.Single(User => User.Name ==name);
+            return query;
+        }
+
+        public UserModel Get(int id)
+        {
+            return _db.Users.Find(id);
         }
 
         public List<UserModel> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _db.Users.ToList();
         }
     }
 }

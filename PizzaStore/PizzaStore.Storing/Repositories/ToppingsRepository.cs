@@ -1,42 +1,38 @@
+using System.Collections.Generic;
+using System.Linq;
+using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 
 namespace PizzaStore.Storing
 {
-    public class ToppingsRepository : ARepository<ToppingsModel>
+    public class ToppingRepository : ARepository<ToppingsModel>
     {
+        PizzaStoreDBContext _db;
+        public ToppingRepository(PizzaStoreDBContext dbContext)
+        {
+            _db = dbContext;
+        }
         public void Add(ToppingsModel t)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Add(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ToppingsModel Find(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ToppingsModel Find(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ToppingsModel Get(int id)
-        {
-            throw new System.NotImplementedException();
+            _db.Toppings.Add(t);
+            _db.SaveChanges();
         }
 
         public ToppingsModel Get(string name)
         {
-            throw new System.NotImplementedException();
+            var ToppingList = _db.Toppings;
+            var query = ToppingList.Single(Topping => Topping.Name ==name);
+            return query;
         }
 
-        public System.Collections.Generic.List<ToppingsModel> GetAll()
+        public ToppingsModel Get(int id)
         {
-            throw new System.NotImplementedException();
+            return _db.Toppings.Find(id);
+        }
+
+        public List<ToppingsModel> GetAll()
+        {
+            return _db.Toppings.ToList();
         }
     }
 }

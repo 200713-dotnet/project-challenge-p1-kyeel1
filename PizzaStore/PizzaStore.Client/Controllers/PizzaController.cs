@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PizzaStore.Client.Models;
+using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 using PizzaStore.Storing;
 
 namespace PizzaStore.Client.Controllers
 {
+    [Route("/[controller]/[action]")]
     public class PizzaController : Controller
     {
         private readonly PizzaStoreDBContext _db; 
@@ -22,7 +24,16 @@ namespace PizzaStore.Client.Controllers
         [HttpGet()]
         public IActionResult Home()
         {
-            ViewBag.PizzaList = _db.Pizzas.ToList();
+            var repo = new PizzaRepository(_db);
+            PizzaFactory pf = new PizzaFactory();
+            var tempPizza = pf.Create();
+            tempPizza.Name = "cheese";
+            tempPizza.Description ="the cheesiest of pizzas";
+            tempPizza.Crust= new CrustModel{Name ="thin",Description = "a thin crusted pizza"};
+            tempPizza.Size = new SizeModel{Name = "small",Diameter =10};
+            tempPizza.Toppings= new List<ToppingsModel>{new ToppingsModel(){Name = "cheese",Description ="the cheeseiest of toppings"}};
+            repo.Add(tempPizza);
+            ViewBag.PizzaList = repo.GetAll();
             return View("Home");
         }
         [HttpGet("{id}")]

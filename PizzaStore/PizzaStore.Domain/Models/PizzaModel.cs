@@ -10,9 +10,9 @@ namespace PizzaStore.Domain.Models
         public CrustModel Crust {get;set;}
         public List<ToppingsModel> Toppings {get;set;}
         public override string ToString(){
-            string result = $"{Name} {Description} {Size.Name} {Crust.Name} Toppings:";
+            string result = $"{Name}: {Description}, {Size.Name}, {Crust.Name}, Toppings:";
             foreach(ToppingsModel t in Toppings){
-                result += $"{t.Name},";
+                result += $" {t.Name},";
             }
             return result;
         } 

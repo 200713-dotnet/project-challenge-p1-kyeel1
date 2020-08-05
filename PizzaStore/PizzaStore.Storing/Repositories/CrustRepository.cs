@@ -1,43 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
+using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 
 namespace PizzaStore.Storing
 {
     public class CrustRepository : ARepository<CrustModel>
     {
+        PizzaStoreDBContext _db;
+        public CrustRepository(PizzaStoreDBContext dbContext)
+        {
+            _db = dbContext;
+        }
         public void Add(CrustModel t)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Add(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public CrustModel Find(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public CrustModel Find(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public CrustModel Get(int id)
-        {
-            throw new System.NotImplementedException();
+            _db.Crusts.Add(t);
+            _db.SaveChanges();
         }
 
         public CrustModel Get(string name)
         {
-            throw new System.NotImplementedException();
+            var CrustList = _db.Crusts;
+            var query = CrustList.Single(Crust => Crust.Name ==name);
+            return query;
+        }
+
+        public CrustModel Get(int id)
+        {
+            return _db.Crusts.Find(id);
         }
 
         public List<CrustModel> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _db.Crusts.ToList();
         }
     }
 }

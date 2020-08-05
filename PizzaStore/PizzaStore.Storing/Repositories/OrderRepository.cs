@@ -1,43 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
+using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 
 namespace PizzaStore.Storing
 {
     public class OrderRepository : ARepository<OrderModel>
     {
+        PizzaStoreDBContext _db;
+        public OrderRepository(PizzaStoreDBContext dbContext)
+        {
+            _db = dbContext;
+        }
         public void Add(OrderModel t)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Add(int id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public OrderModel Find(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public OrderModel Find(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public OrderModel Get(int id)
-        {
-            throw new System.NotImplementedException();
+            _db.Orders.Add(t);
+            _db.SaveChanges();
         }
 
         public OrderModel Get(string name)
         {
-            throw new System.NotImplementedException();
+            var OrderList = _db.Orders;
+            var query = OrderList.Single(Order => Order.Name ==name);
+            return query;
+        }
+
+        public OrderModel Get(int id)
+        {
+            return _db.Orders.Find(id);
         }
 
         public List<OrderModel> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _db.Orders.ToList();
         }
     }
 }

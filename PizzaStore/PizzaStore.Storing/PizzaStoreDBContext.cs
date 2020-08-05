@@ -9,6 +9,9 @@ namespace PizzaStore.Storing
         public DbSet<UserModel> Users{get;set;}
         public DbSet<StoreModel> Stores{get;set;}
         public DbSet<OrderModel> Orders{get;set;}
+        public DbSet<SizeModel> Sizes{get;set;}
+        public DbSet<ToppingsModel> Toppings{get;set;}
+        public DbSet<CrustModel> Crusts{get;set;}
         public PizzaStoreDBContext(DbContextOptions options) : base(options)
         {
 

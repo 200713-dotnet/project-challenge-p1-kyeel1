@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Pizza Store Page";
+    //Layout = "PizzaLayout";
+}
+
+<div class="text-center">
+    <header><h1 class="display-4">Welcome to the Pizza Store</h1></header>
+    <main>
+        <ul>
+            @foreach (var p in @ViewBag.PizzaList)
+            {
+                <li>we offer @p.ToString()</li>
+            }
+            
+        </ul>
+
+
+    </main>
+    <footer></footer>
+    
+    
+    
+</div>

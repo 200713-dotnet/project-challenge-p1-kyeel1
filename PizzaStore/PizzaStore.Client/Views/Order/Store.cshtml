@@ -1,25 +1,24 @@
 @model PizzaStore.Client.Models.PizzaViewModel
 
  
-<form asp-action="placeorder" method="post">
-  @foreach (var crust in @Model.Crusts)
+@using(Html.BeginForm("PlaceOrder", "Order", null, FormMethod.Post))
+{
+  @Html.AntiForgeryToken();
+  foreach (var crust in Model.Crusts)
   {
-    <input type="radio" asp-for="@Model.Crust" value="@crust.Name">
+    @Html.RadioButtonFor(m => m.Crust, crust.Name);
+    @Html.LabelFor(m => crust.Name);
+    @Html.ValidationMessageFor(m => m.Crust)
   }
 
-  <select asp-for="@Model.Size">
-    @foreach (var size in @Model.Sizes)
-    {
-      <option value="@size.Name">@size.Name</option>
-    }
-  </select>
+  @Html.DropDownListFor(m => m.Size, new SelectList(Model.Sizes));
 
-  @foreach (var topping in @Model.Toppings)
+  foreach (var topping in Model.Toppings2)
   {
-    <input type="checkbox" name="selectedtoppings" id="selectedtoppings" asp-for="SelectedToppings" value="@topping.Name">
-    <label for="selectedtoppings">@topping.Name</label>
-    
+    @Html.CheckBoxFor(m => topping.IsSelected, new { name = "selectedtoppings2", value = topping.Text });
+    @Html.DisplayFor(m => topping.Text);
+    @Html.HiddenFor(m => m.SelectedToppings2)
   }
-
+  
   <button type="submit">place order</button>
-</form>
+}

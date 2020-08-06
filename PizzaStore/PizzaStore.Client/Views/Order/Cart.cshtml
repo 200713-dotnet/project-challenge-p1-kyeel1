@@ -1,7 +1,5 @@
 @model PizzaStore.Client.Models.PizzaViewModel
 
-@Model.Crust;
-
-@Model.Size;
-
-@Model.Toppings.ToString();
+@foreach(var p in @Model.Cart){
+    <p>@p.ToString();</p>
+}

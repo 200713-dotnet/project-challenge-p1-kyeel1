@@ -43,8 +43,16 @@ namespace PizzaStore.Client.Controllers
         {
             if(ModelState.IsValid)
             {
-                return View("test");
+                return RedirectToAction("UpdateDatabase",pizzaViewModel);
             }
+            return View("Store",pizzaViewModel);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateDatabase(PizzaViewModel pizzaViewModel)
+        {
+            pizzaViewModel.Convert(pizzaViewModel,_db);
             return View("Cart",pizzaViewModel);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

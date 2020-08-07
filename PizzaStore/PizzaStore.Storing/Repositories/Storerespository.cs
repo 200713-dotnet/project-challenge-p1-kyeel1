@@ -41,5 +41,16 @@ namespace PizzaStore.Storing
          
             return query;
         }
+        public bool CheckCurrentStore()
+        {
+            var StoreList = _db.Stores;
+            if(StoreList.SingleOrDefault(user => user.CurrentStore ==true) != null){
+            return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

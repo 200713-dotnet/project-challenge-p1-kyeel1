@@ -19,13 +19,13 @@ namespace PizzaStore.Client.Controllers
         {
             _db = dbContext;
         }
-
+        
         [HttpGet]
         public IActionResult Get()
         {
             var UM =new UserViewModel(_db);
-            UM.GetCurrentUser();
-            if(UM.User != null){
+            if(UM.CheckCurrentUser(_db)){
+                UM.GetCurrentUser(_db);
                 return View("UserInfo",UM);
             }
             else{
@@ -33,10 +33,10 @@ namespace PizzaStore.Client.Controllers
             }
         }
         [HttpPost]
-        public IActionResult LogIn(UserViewModel user)
+        public IActionResult LogIn(UserViewModel uvm)
         {
-            user.SetCurrentUser();
-            return View("UserInfo",user);
+            uvm.SetCurrentUser(_db);
+            return View("UserInfo",uvm);
 
         }
         

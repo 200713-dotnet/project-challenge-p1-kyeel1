@@ -16,17 +16,26 @@ namespace PizzaStore.Client.Models
             Store = SF.Create();
             _db =dbo;
         }
-        public StoreModel GetCurrentStore()
+        public StoreViewModel()
+        {
+            
+        }
+        public StoreModel GetCurrentStore(PizzaStoreDBContext _db)
         {
             var SR = new StoreRepository(_db);
             return SR.GetCurrentStore();
         }
-        public void SetCurrentStore()
+        public void SetCurrentStore(PizzaStoreDBContext _db)
         {
             var SR = new StoreRepository(_db);
             Store.CurrentStore=true;
             SR.Add(Store);
 
+        }
+        public bool CheckCurrentStore(PizzaStoreDBContext _db)
+        {
+            var SR = new StoreRepository(_db);
+            return SR.CheckCurrentStore();
         }
     }
 }

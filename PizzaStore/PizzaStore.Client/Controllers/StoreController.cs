@@ -23,8 +23,9 @@ namespace PizzaStore.Client.Controllers
         public IActionResult Get()
         {
             var SM =new StoreViewModel(_db);
-            SM.GetCurrentStore();
-            if(SM.Store != null){
+            
+            if(SM.CheckCurrentStore(_db)){
+                SM.GetCurrentStore(_db);
                 return View("StoreInfo",SM);
             }
             else{
@@ -32,10 +33,10 @@ namespace PizzaStore.Client.Controllers
             }
         }
         [HttpPost]
-        public IActionResult LogIn(StoreViewModel store)
+        public IActionResult LogIn(StoreViewModel SVM)
         {
-            store.SetCurrentStore();
-            return View("StoreInfo",store);
+            SVM.SetCurrentStore(_db);
+            return View("StoreInfo",SVM);
 
         }
         

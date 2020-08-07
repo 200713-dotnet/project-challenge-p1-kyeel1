@@ -5,8 +5,8 @@ namespace PizzaStore.Domain.Models
     {
         public string Name{get;set;}
         public List<OrderModel> Orders {get;set;}
-        public bool CurrentUser{get;set;}
-        
+        public bool CurrentUser {get;set;}
+
         public override string ToString() 
         {
             return  $"User: {Name}";

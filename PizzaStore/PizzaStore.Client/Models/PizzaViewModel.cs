@@ -13,19 +13,28 @@ namespace PizzaStore.Client.Models
         public List<SizeModel> Sizes { get; set; }
         public List<ToppingsModel> Toppings { get; set; }
         public List<CheckBoxTopping> Toppings2 { get; set; }
+        public List<UserModel> Users{get;set;}
+        public List<StoreModel> Stores{get;set;}
         public List<PizzaModel> SpecialtyPizzas {get;set;}
         public OrderModel Cart {get;set;}
 
 
+
+
         // in from the client
-        [Required(ErrorMessage = "Better select Crust")]
+        [Required]
         public string Crust { get; set; }
         [Required]
         public string Size { get; set; }
+        
+        public List<string> SelectedToppings { get; set; }
         [MinLength (1)]
         [MaxLength(5)]
-        public List<string> SelectedToppings { get; set; }
         public List<string> SelectedToppings2 { get; set; }
+        [Required]
+        public UserModel User {get;set;}
+        [Required]
+        public StoreModel Store{get;set;}
         public PizzaModel SelectedPizza{get;set;}
 
         public PizzaViewModel(PizzaStoreDBContext dbo)
@@ -40,12 +49,12 @@ namespace PizzaStore.Client.Models
             foreach(var t in Toppings){
                 Toppings2.Add(new CheckBoxTopping() {Name = t.Name, Id = t.Id,Description = t.Description, Text = t.Name});
             }
+            var uRepo = new UserRepository(dbo);
+            Users = uRepo.GetAll();
+            var stRepo = new StoreRepository(dbo);
+            Stores = stRepo.GetAll();
             var pRepo = new PizzaRepository(dbo);
             SpecialtyPizzas = pRepo.GetAllSpecialty();
-        }
-        public PizzaViewModel()
-        {
-            
         }
         public void ConvertRegular(PizzaViewModel pizzaViewModel,PizzaStoreDBContext _db)
         {

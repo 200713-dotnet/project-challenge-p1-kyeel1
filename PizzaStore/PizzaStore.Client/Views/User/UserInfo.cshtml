@@ -1,8 +1,11 @@
 @model PizzaStore.Client.Models.UserViewModel
-@using (Html.BeginForm("LogIn", "User", null, FormMethod.Post))
-{
-    @Html.TextBoxFor(user => user.User.Name);
-    <button type="submit">Log In</button>
+<h1>Hello @Model.User.Name</h1>
+<h1>This is you home page where you can view past orders</h1>
+@foreach(var o in @Model.User.Orders){
+    <p>@o.Id</p>
+    @foreach (var p in o.Pizzas)
+    {
+        <p>@p.ToString()</p>
+    }
+
 }
-<h1>Login</h1>
-<h1></h1>

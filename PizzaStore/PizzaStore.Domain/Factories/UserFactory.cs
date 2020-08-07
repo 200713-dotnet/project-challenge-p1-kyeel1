@@ -10,6 +10,7 @@ namespace PizzaStore.Domain.Factory
             var p = new UserModel();
             p.Name = "";
             p.Orders = new List<OrderModel>();
+            p.CurrentUser = false;
             return new UserModel();
         }
     }

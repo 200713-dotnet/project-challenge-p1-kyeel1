@@ -34,7 +34,7 @@ namespace PizzaStore.Client.Controllers
         {
             return View("Store",new PizzaViewModel(_db));
         }
-        public IActionResult test(){
+        public IActionResult Cart(){
             return View("Cart");
          }
         [HttpPost]
@@ -43,17 +43,10 @@ namespace PizzaStore.Client.Controllers
         {
             if(ModelState.IsValid)
             {
-                return RedirectToAction("UpdateDatabase",pizzaViewModel);
+                pizzaViewModel.Convert(pizzaViewModel,_db);
+                return View("Store");
             }
             return View("Store",pizzaViewModel);
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UpdateDatabase(PizzaViewModel pizzaViewModel)
-        {
-            pizzaViewModel.Convert(pizzaViewModel,_db);
-            return View("Cart",pizzaViewModel);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

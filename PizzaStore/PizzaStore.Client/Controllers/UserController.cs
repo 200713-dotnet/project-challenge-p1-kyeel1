@@ -20,15 +20,24 @@ namespace PizzaStore.Client.Controllers
             _db = dbContext;
         }
 
-        [HttpGet()]
-        public IEnumerable<UserModel> Get()
+        [HttpGet]
+        public IActionResult Get()
         {
-            return _db.Users.ToList();
+            var UM =new UserViewModel(_db);
+            UM.GetCurrentUser();
+            if(UM.User != null){
+                return View("UserInfo",UM);
+            }
+            else{
+                return View("UserLogIn",new UserViewModel(_db));
+            }
         }
-        [HttpGet("{id}")]
-        public UserModel Get(int id)
+        [HttpPost]
+        public IActionResult LogIn(UserViewModel user)
         {
-            return _db.Users.SingleOrDefault(p => p.Id == id);
+            user.SetCurrentUser();
+            return View("UserInfo",user);
+
         }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

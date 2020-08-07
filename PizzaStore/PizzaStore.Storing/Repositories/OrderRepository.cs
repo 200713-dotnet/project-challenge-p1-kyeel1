@@ -29,7 +29,13 @@ namespace PizzaStore.Storing
         {
             return _db.Orders.Find(id);
         }
-
+        public OrderModel GetCurrentOrder()
+        {
+            var OrderList = _db.Orders;
+            var query = OrderList.Single(Order => Order.CurrentOrder ==true);
+         
+            return query;
+        }
         public List<OrderModel> GetAll()
         {
             return _db.Orders.ToList();

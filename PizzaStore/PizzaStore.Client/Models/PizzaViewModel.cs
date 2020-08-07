@@ -14,6 +14,7 @@ namespace PizzaStore.Client.Models
         public List<ToppingsModel> Toppings { get; set; }
         public List<CheckBoxTopping> Toppings2 { get; set; }
         public List<PizzaModel> SpecialtyPizzas {get;set;}
+        public OrderModel Cart {get;set;}
 
 
         // in from the client
@@ -25,7 +26,6 @@ namespace PizzaStore.Client.Models
         [MaxLength(5)]
         public List<string> SelectedToppings { get; set; }
         public List<string> SelectedToppings2 { get; set; }
-        public List<PizzaModel> Cart {get;set;}
         public PizzaModel SelectedPizza{get;set;}
 
         public PizzaViewModel(PizzaStoreDBContext dbo)
@@ -42,7 +42,6 @@ namespace PizzaStore.Client.Models
             }
             var pRepo = new PizzaRepository(dbo);
             SpecialtyPizzas = pRepo.GetAllSpecialty();
-            Cart = new List<PizzaModel>();
         }
         public PizzaViewModel()
         {
@@ -50,6 +49,7 @@ namespace PizzaStore.Client.Models
         }
         public void ConvertRegular(PizzaViewModel pizzaViewModel,PizzaStoreDBContext _db)
         {
+            var OR = new OrderRepository(_db);
             var CR = new CrustRepository(_db);
             var SR = new SizeRepository(_db);
             var PR = new PizzaRepository(_db);
@@ -59,7 +59,18 @@ namespace PizzaStore.Client.Models
                 TM.Add(TR.Get(t));
             }
             var tempPizza = new PizzaModel(){Name = "custom",Description = "custom",Size = SR.Get(pizzaViewModel.Size),Crust= CR.Get(pizzaViewModel.Crust),Toppings = TM,SpecialPizza = false};
-            pizzaViewModel.Cart.Add(tempPizza);
+            var cart =OR.GetCurrentOrder();
+            var OF = new OrderFactory();
+            if(cart != null)
+            {
+                cart.Pizzas.Add(tempPizza);
+            }
+            else
+            {
+                cart = OF.Create();
+                cart.Pizzas.Add(tempPizza);
+                OR.Add(cart);
+            }
             PR.Add(tempPizza);
         }
         public void ConvertSpecial(PizzaViewModel pizzaViewModel,PizzaStoreDBContext _db)
@@ -68,9 +79,36 @@ namespace PizzaStore.Client.Models
             var SR = new SizeRepository(_db);
             var PR = new PizzaRepository(_db);
             var TR = new ToppingRepository(_db);
+            var OR = new OrderRepository(_db);
             var tempPizza = new PizzaModel(){Name = SelectedPizza.Name,Description = SelectedPizza.Description,Size = SR.Get(pizzaViewModel.Size),Crust= CR.Get(pizzaViewModel.Crust),Toppings = SelectedPizza.Toppings,SpecialPizza = true};
-            pizzaViewModel.Cart.Add(tempPizza);
+            var cart =OR.GetCurrentOrder();
+            var OF = new OrderFactory();
+            if(cart != null)
+            {
+                cart.Pizzas.Add(tempPizza);
+            }
+            else
+            {
+                cart = OF.Create();
+                cart.Pizzas.Add(tempPizza);
+                OR.Add(cart);
+            }
             PR.Add(tempPizza);
+        }
+        public void GetCart(PizzaStoreDBContext _db)
+        {
+            var OF = new OrderFactory();
+            var OR = new OrderRepository(_db);
+            var cart =OR.GetCurrentOrder();
+            if(cart != null)
+            {
+                Cart = cart;
+            }
+            else
+            {
+                Cart = OF.Create();
+                OR.Add(Cart);
+            }
         }
     }
 

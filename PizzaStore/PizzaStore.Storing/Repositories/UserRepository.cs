@@ -34,5 +34,12 @@ namespace PizzaStore.Storing
         {
             return _db.Users.ToList();
         }
+        public UserModel GetCurrentUser()
+        {
+            var UserList = _db.Users;
+            var query = UserList.Single(user => user.CurrentUser ==true);
+         
+            return query;
+        }
     }
 }

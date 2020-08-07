@@ -34,5 +34,12 @@ namespace PizzaStore.Storing
         {
             return _db.Stores.ToList();
         }
+        public StoreModel GetCurrentStore()
+        {
+            var StoreList = _db.Stores;
+            var query = StoreList.Single(store => store.CurrentStore ==true);
+         
+            return query;
+        }
     }
 }

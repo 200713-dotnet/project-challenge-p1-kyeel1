@@ -1,0 +1,6 @@
+@model PizzaStore.Client.Models.StoreViewModel
+@using (Html.BeginForm("LogIn", "Store", null, FormMethod.Post))
+{
+    @Html.TextBoxFor(store => store.Store.Name);
+    <button type="submit">Log In</button>
+}

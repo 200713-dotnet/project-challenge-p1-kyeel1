@@ -19,23 +19,15 @@ namespace PizzaStore.Client.Controllers
         {
             _db = dbContext;
         }
-
-        [HttpGet()]
-        public IEnumerable<OrderModel> Get()
-        {
-            return _db.Orders.ToList();
-        }
-        [HttpGet("{id}")]
-        public OrderModel Get(int id)
-        {
-            return _db.Orders.SingleOrDefault(p => p.Id == id);
-        }
+        [HttpGet]
         public IActionResult Store()
         {
             return View("Store",new PizzaViewModel(_db));
         }
         public IActionResult Cart(){
-            return View("Cart");
+            var PVM = new PizzaViewModel(_db);
+            PVM.GetCart(_db);
+            return View("Cart",PVM);
          }
         [HttpPost]
         [ValidateAntiForgeryToken]

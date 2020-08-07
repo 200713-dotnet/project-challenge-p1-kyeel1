@@ -25,6 +25,7 @@ namespace PizzaStore.Client.Controllers
         public IActionResult Home()
         {
             var repo = new PizzaRepository(_db);
+            /*
             PizzaFactory pf = new PizzaFactory();
             var tempPizza = pf.Create();
             tempPizza.Name = "cheese";
@@ -32,7 +33,7 @@ namespace PizzaStore.Client.Controllers
             tempPizza.Crust= new CrustModel{Name ="thin",Description = "a thin crusted pizza"};
             tempPizza.Size = new SizeModel{Name = "small",Diameter =10};
             tempPizza.Toppings= new List<ToppingsModel>{new ToppingsModel(){Name = "cheese",Description ="the cheeseiest of toppings"}};
-            repo.Add(tempPizza);
+            repo.Add(tempPizza);*/
             ViewBag.PizzaList = repo.GetAll();
             return View("Home");
         }

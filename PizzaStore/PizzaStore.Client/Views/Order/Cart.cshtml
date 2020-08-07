@@ -1,5 +1,5 @@
 @model PizzaStore.Client.Models.PizzaViewModel
-<p>there is text here</p>
-@foreach(var p in @Model.Cart){
-    <p>@p.ToString();</p>
+@foreach(var p in @Model.Cart.Pizzas)
+{
+    <p>@p.ToString()</p>
 }

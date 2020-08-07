@@ -19,15 +19,24 @@ namespace PizzaStore.Client.Controllers
         {
             _db = dbContext;
         }
-        [HttpGet()]
-        public IEnumerable<StoreModel> Get()
+        [HttpGet]
+        public IActionResult Get()
         {
-            return _db.Stores.ToList();
+            var SM =new StoreViewModel(_db);
+            SM.GetCurrentStore();
+            if(SM.Store != null){
+                return View("StoreInfo",SM);
+            }
+            else{
+                return View("StoreLogIn",new StoreViewModel(_db));
+            }
         }
-        [HttpGet("{id}")]
-        public StoreModel Get(int id)
+        [HttpPost]
+        public IActionResult LogIn(StoreViewModel store)
         {
-            return _db.Stores.SingleOrDefault(p => p.Id == id);
+            store.SetCurrentStore();
+            return View("StoreInfo",store);
+
         }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -30,7 +30,10 @@ namespace PizzaStore.Storing
         {
             return _db.Pizzas.Find(id);
         }
-
+        public List<PizzaModel> GetAllSpecialty()
+        {
+            return _db.Pizzas.Include(size => _db.Sizes.ToList()).Include(crust => _db.Crusts.ToList()).Include(toppings => _db.Toppings.ToList()).Where(isSpecial => isSpecial.SpecialPizza == true).ToList();
+        }
         public List<PizzaModel> GetAll()
         {
             return _db.Pizzas.Include(size => _db.Sizes.ToList()).Include(crust => _db.Crusts.ToList()).Include(toppings => _db.Toppings.ToList()).ToList();

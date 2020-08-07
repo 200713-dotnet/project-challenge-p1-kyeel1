@@ -39,11 +39,22 @@ namespace PizzaStore.Client.Controllers
          }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PlaceOrder(PizzaViewModel pizzaViewModel)
+        public IActionResult PlaceOrderRegular(PizzaViewModel pizzaViewModel)
         {
             if(ModelState.IsValid)
             {
-                pizzaViewModel.Convert(pizzaViewModel,_db);
+                pizzaViewModel.ConvertRegular(pizzaViewModel,_db);
+                return View("Store");
+            }
+            return View("Store",pizzaViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PlaceOrderSpecial(PizzaViewModel pizzaViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                pizzaViewModel.ConvertSpecial(pizzaViewModel,_db);
                 return View("Store");
             }
             return View("Store",pizzaViewModel);

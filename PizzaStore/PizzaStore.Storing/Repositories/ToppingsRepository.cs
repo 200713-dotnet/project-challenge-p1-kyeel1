@@ -21,7 +21,7 @@ namespace PizzaStore.Storing
         public ToppingsModel Get(string name)
         {
             var ToppingList = _db.Toppings;
-            var query = ToppingList.Single(Topping => Topping.Name ==name);
+            var query = ToppingList.Single(Topping => Topping.Name.Equals(name));
             return query;
         }
 

@@ -1,15 +1,10 @@
 @model PizzaStore.Client.Models.PizzaViewModel
 
  
-@using(Html.BeginForm("PlaceOrder", "Order", null, FormMethod.Post))
+@using(Html.BeginForm("PlaceOrderRegular", "Order", null, FormMethod.Post))
 {
   @Html.AntiForgeryToken();
-  foreach (var crust in Model.Crusts)
-  {
-    @Html.RadioButtonFor(m => m.Crust, crust.Name);
-    @Html.LabelFor(m => crust.Name);
-    @Html.ValidationMessageFor(m => m.Crust)
-  }
+  @Html.DropDownListFor(m => m.Crust, new SelectList(Model.Crusts));
 
   @Html.DropDownListFor(m => m.Size, new SelectList(Model.Sizes));
 
@@ -19,6 +14,17 @@
     @Html.DisplayFor(m => topping.Text);
     @Html.HiddenFor(m => m.SelectedToppings2)
   }
+  
+  <button type="submit">place order</button>
+}
+@using(Html.BeginForm("PlaceOrderSpecial", "Order", null, FormMethod.Post))
+{
+  @Html.DropDownListFor(m => m.Crust, new SelectList(Model.Crusts));
+
+  @Html.DropDownListFor(m => m.Size, new SelectList(Model.Sizes));
+
+  @Html.DropDownListFor(m => m.SelectedPizza, new SelectList(Model.SpecialtyPizzas));
+
   
   <button type="submit">place order</button>
 }

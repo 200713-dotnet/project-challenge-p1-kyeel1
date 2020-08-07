@@ -8,6 +8,7 @@ namespace PizzaStore.Domain.Models
         public string Description{get;set;}
         public SizeModel Size {get;set;}
         public CrustModel Crust {get;set;}
+        public bool SpecialPizza{get;set;}
         public List<ToppingsModel> Toppings {get;set;}
         public override string ToString(){
             string result = $"{Name}: {Description}, {Size.Name}, {Crust.Name}, Toppings:";

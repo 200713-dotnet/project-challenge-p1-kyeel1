@@ -3,6 +3,7 @@ namespace PizzaStore.Domain.Models
 {
     public class OrderModel : AModel
     {
+        public bool CurrentOrder{get;set;}
         public string Name{get;set;}
         public List<PizzaModel> Pizzas {get;set;}
         public override string ToString()

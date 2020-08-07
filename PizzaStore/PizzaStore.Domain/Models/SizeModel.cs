@@ -6,7 +6,7 @@ namespace PizzaStore.Domain.Models
         public int Diameter {get;set;}
         public string Description{get;set;}
         public override string ToString(){
-            return $"{Name} / {Diameter} {Description}";
+            return $"{Name} / {Diameter}\" {Description}";
         }
     }
 }

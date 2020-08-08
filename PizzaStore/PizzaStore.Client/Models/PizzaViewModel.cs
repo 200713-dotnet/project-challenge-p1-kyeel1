@@ -28,14 +28,12 @@ namespace PizzaStore.Client.Models
         public string Size { get; set; }
         
         public List<string> SelectedToppings { get; set; }
-        [MinLength (1)]
-        [MaxLength(5)]
         public List<string> SelectedToppings2 { get; set; }
         [Required]
         public UserModel User {get;set;}
         [Required]
-        public StoreModel Store{get;set;}
-        public PizzaModel SelectedPizza{get;set;}
+        public string Store{get;set;}
+        public string SelectedPizza{get;set;}
 
         public PizzaViewModel(PizzaStoreDBContext dbo)
         {
@@ -56,6 +54,7 @@ namespace PizzaStore.Client.Models
             var pRepo = new PizzaRepository(dbo);
             SpecialtyPizzas = pRepo.GetAllSpecialty();
         }
+        public PizzaViewModel(){}
         public void ConvertRegular(PizzaViewModel pizzaViewModel,PizzaStoreDBContext _db)
         {
             var OR = new OrderRepository(_db);
@@ -77,6 +76,7 @@ namespace PizzaStore.Client.Models
             else
             {
                 cart = OF.Create();
+                cart.CurrentOrder = true;
                 cart.Pizzas.Add(tempPizza);
                 OR.Add(cart);
             }
@@ -89,7 +89,10 @@ namespace PizzaStore.Client.Models
             var PR = new PizzaRepository(_db);
             var TR = new ToppingRepository(_db);
             var OR = new OrderRepository(_db);
-            var tempPizza = new PizzaModel(){Name = SelectedPizza.Name,Description = SelectedPizza.Description,Size = SR.Get(pizzaViewModel.Size),Crust= CR.Get(pizzaViewModel.Crust),Toppings = SelectedPizza.Toppings,SpecialPizza = true};
+            var PF = new PizzaFactory();
+            var tempSpecialty = PF.Create();
+            tempSpecialty = PR.Get(SelectedPizza);
+            var tempPizza = new PizzaModel(){Name = SelectedPizza,Description = tempSpecialty.Description,Size = SR.Get(pizzaViewModel.Size),Crust= CR.Get(pizzaViewModel.Crust),Toppings = tempSpecialty.Toppings,SpecialPizza = true};
             var cart =OR.GetCurrentOrder();
             var OF = new OrderFactory();
             if(cart != null)
@@ -118,6 +121,12 @@ namespace PizzaStore.Client.Models
                 Cart = OF.Create();
                 OR.Add(Cart);
             }
+        }
+        public void FinishOrder(PizzaStoreDBContext _db)
+        {
+            GetCart(_db);
+            Cart.CurrentOrder =false;
+
         }
     }
 

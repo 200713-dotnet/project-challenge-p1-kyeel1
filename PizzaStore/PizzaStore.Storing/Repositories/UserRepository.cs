@@ -21,7 +21,7 @@ namespace PizzaStore.Storing
         public UserModel Get(string name)
         {
             var UserList = _db.Users;
-            var query = UserList.Single(User => User.Name ==name);
+            var query = UserList.First(User => User.Name ==name);
             return query;
         }
 
@@ -37,7 +37,7 @@ namespace PizzaStore.Storing
         public bool CheckCurrentUser()
         {
             var UserList = _db.Users;
-            if(UserList.SingleOrDefault(user => user.CurrentUser ==true) != null){
+            if(UserList.FirstOrDefault(user => user.CurrentUser ==true) != null){
             return true;
             }
             else
@@ -48,7 +48,7 @@ namespace PizzaStore.Storing
         public UserModel GetCurrentUser()
         {
             var UserList = _db.Users;
-            var query = UserList.Single(user => user.CurrentUser ==true);
+            var query = UserList.First(user => user.CurrentUser ==true);
 
             return query;
         }

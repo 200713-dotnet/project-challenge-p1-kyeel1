@@ -21,7 +21,7 @@ namespace PizzaStore.Storing
         public CrustModel Get(string name)
         {
             var CrustList = _db.Crusts;
-            var query = CrustList.Single(Crust => Crust.Name ==name);
+            var query = CrustList.First(Crust => Crust.Name ==name);
             return query;
         }
 

@@ -21,7 +21,7 @@ namespace PizzaStore.Storing
         public SizeModel Get(string name)
         {
             var SizeList = _db.Sizes;
-            var query = SizeList.Single(Size => Size.Name ==name);
+            var query = SizeList.First(Size => Size.Name ==name);
             return query;
         }
 

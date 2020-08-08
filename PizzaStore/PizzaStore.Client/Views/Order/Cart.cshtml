@@ -3,3 +3,7 @@
 {
     <p>@p.ToString()</p>
 }
+@using(Html.BeginForm("FinishOrder", "Order", null, FormMethod.Post))
+{
+  <button type="submit">Finish order</button>
+}

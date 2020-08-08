@@ -21,7 +21,7 @@ namespace PizzaStore.Storing
         public OrderModel Get(string name)
         {
             var OrderList = _db.Orders;
-            var query = OrderList.Single(Order => Order.Name ==name);
+            var query = OrderList.First(Order => Order.Name ==name);
             return query;
         }
 
@@ -32,10 +32,11 @@ namespace PizzaStore.Storing
         public OrderModel GetCurrentOrder()
         {
             var OrderList = _db.Orders;
-            var query = OrderList.Single(Order => Order.CurrentOrder ==true);
+            var query = OrderList.FirstOrDefault(Order => Order.CurrentOrder ==true);
          
             return query;
         }
+        
         public List<OrderModel> GetAll()
         {
             return _db.Orders.ToList();

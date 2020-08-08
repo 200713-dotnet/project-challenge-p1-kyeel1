@@ -21,7 +21,7 @@ namespace PizzaStore.Storing
         public StoreModel Get(string name)
         {
             var StoreList = _db.Stores;
-            var query = StoreList.Single(Store => Store.Name ==name);
+            var query = StoreList.First(Store => Store.Name ==name);
             return query;
         }
 
@@ -37,14 +37,14 @@ namespace PizzaStore.Storing
         public StoreModel GetCurrentStore()
         {
             var StoreList = _db.Stores;
-            var query = StoreList.Single(store => store.CurrentStore ==true);
+            var query = StoreList.First(store => store.CurrentStore ==true);
          
             return query;
         }
         public bool CheckCurrentStore()
         {
             var StoreList = _db.Stores;
-            if(StoreList.SingleOrDefault(user => user.CurrentStore ==true) != null){
+            if(StoreList.FirstOrDefault(user => user.CurrentStore ==true) != null){
             return true;
             }
             else

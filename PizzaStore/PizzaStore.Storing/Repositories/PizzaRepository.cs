@@ -22,7 +22,7 @@ namespace PizzaStore.Storing
         public PizzaModel Get(string name)
         {
             var pizzaList = _db.Pizzas;
-            var query = pizzaList.Single(pizza => pizza.Name ==name);
+            var query = pizzaList.First(pizza => pizza.Name ==name);
             return query;
         }
 

@@ -17,7 +17,7 @@ namespace PizzaStore.Domain.Models
                 result += $" {t.Name},";
             }
             result+=$" Total Price: {CalculatePricing()}";//check to see if you can do this later with fred
-            return $"{Name}";
+            return result;
         } 
         public int CalculatePricing()
         {

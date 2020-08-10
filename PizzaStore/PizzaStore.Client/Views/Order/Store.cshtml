@@ -3,7 +3,7 @@
  
 @using(Html.BeginForm("PlaceOrderRegular", "Order", null, FormMethod.Post))
 {
-  @Html.DropDownListFor(m => Model.Crust,new SelectList(Model.Crusts));
+  @Html.DropDownListFor(m => Model.Crust,new SelectList(Model.Crusts),"Crust");
 
   @Html.DropDownListFor(m => Model.Size, new SelectList(Model.Sizes));
 
@@ -14,8 +14,6 @@
     @Html.HiddenFor(m => m.Toppings2[i].Text);
     
   }
-
-  @Html.DropDownListFor(m => @Model.Topping, new SelectList(Model.Toppings));
   @Html.DropDownListFor(m => @Model.User, new SelectList(Model.Users));
 
   @Html.DropDownListFor(m => @Model.Store, new SelectList(Model.Stores));
@@ -33,6 +31,5 @@
   
   @Html.DropDownListFor(m => Model.Store, new SelectList(Model.Stores));
 
-  
   <button type="submit">place order</button>
 }

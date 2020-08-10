@@ -18,11 +18,8 @@ namespace PizzaStore.Storing
         {
             
             _db.Pizzas.Add(t);
-            try{
             _db.SaveChanges();
-            }
-            catch
-            {}
+
         }
 
         public PizzaModel Get(string name)

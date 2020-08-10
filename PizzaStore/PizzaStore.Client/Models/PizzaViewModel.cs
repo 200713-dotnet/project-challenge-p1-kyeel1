@@ -103,15 +103,16 @@ namespace PizzaStore.Client.Models
             else
             {
                 cart = OF.Create();
+                
+                cart.Pizzas = new List<PizzaModel>();
+                cart.Pizzas.Add(tempPizza);
+                cart.CurrentOrder = true;
+                OR.UpdateCurrentOrder(cart);
                 var tempUser = UR.Get(User);
                 UR.AddOrder(tempUser.Id,cart);
                 var tempStore = STR.Get(Store);
                 STR.AddOrder(tempStore.Id,cart);
-                cart.Pizzas = new List<PizzaModel>();
-                cart.Pizzas.Add(tempPizza);
-                OR.UpdateCurrentOrder(cart);
             }
-            PR.Add(tempPizza);
         }
         public void ConvertSpecial(PizzaViewModel pizzaViewModel,PizzaStoreDBContext _db)
         {
@@ -149,14 +150,15 @@ namespace PizzaStore.Client.Models
             else
             {
                 cart = OF.Create();
+                cart.Pizzas.Add(tempPizza);
+                cart.CurrentOrder = true;
+                OR.UpdateCurrentOrder(cart);
                 var tempUser = UR.Get(User);
                 UR.AddOrder(tempUser.Id,cart);
                 var tempStore = STR.Get(Store);
                 STR.AddOrder(tempStore.Id,cart);
-                cart.Pizzas.Add(tempPizza);
-                OR.UpdateCurrentOrder(cart);
+                
             }
-            PR.Add(tempPizza);
         }
         public void GetCart(PizzaStoreDBContext _db)
         {
@@ -175,8 +177,9 @@ namespace PizzaStore.Client.Models
         }
         public void FinishOrder(PizzaStoreDBContext _db)
         {
-            GetCart(_db);
-            Cart.CurrentOrder =false;
+            var OR = new OrderRepository(_db);
+            OR.UpdateCurrentOrder();
+        
 
         }
         

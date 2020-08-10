@@ -15,8 +15,12 @@ namespace PizzaStore.Storing
         }
         public void Add(OrderModel t)
         {
+            try{
             _db.Orders.Add(t);
+            
             _db.SaveChanges();
+            }
+            catch{}
         }
 
         public OrderModel Get(string name)

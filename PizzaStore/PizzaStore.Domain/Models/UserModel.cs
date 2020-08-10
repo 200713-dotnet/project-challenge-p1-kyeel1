@@ -9,7 +9,8 @@ namespace PizzaStore.Domain.Models
 
         public override string ToString() 
         {
-            return  $"User: {Name}";
+            //return  $"User: {Name}";
+            return $"{Name}";
         }
     }
 }

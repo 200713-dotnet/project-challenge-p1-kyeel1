@@ -11,17 +11,23 @@ namespace PizzaStore.Storing
         PizzaStoreDBContext _db;
         public PizzaRepository(PizzaStoreDBContext dbContext)
         {
+            
             _db = dbContext;
         }
         public void Add(PizzaModel t)
         {
+            
             _db.Pizzas.Add(t);
+            try{
             _db.SaveChanges();
+            }
+            catch
+            {}
         }
 
         public PizzaModel Get(string name)
         {
-            var pizzaList = _db.Pizzas;
+            var pizzaList = _db.Pizzas.Include(size => _db.Sizes.ToList()).Include(crust => _db.Crusts.ToList()).Include(toppings => _db.Toppings.ToList());
             var query = pizzaList.First(pizza => pizza.Name ==name);
             return query;
         }

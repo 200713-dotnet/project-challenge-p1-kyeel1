@@ -24,8 +24,7 @@ namespace PizzaStore.Client.Controllers
         {
             var SM =new StoreViewModel(_db);
             
-            if(SM.CheckCurrentStore(_db)){
-                SM.GetCurrentStore(_db);
+            if(SM.GetCurrentStore(_db) != null){
                 return View("StoreInfo",SM);
             }
             else{

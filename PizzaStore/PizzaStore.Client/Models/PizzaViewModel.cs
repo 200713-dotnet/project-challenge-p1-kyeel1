@@ -27,13 +27,13 @@ namespace PizzaStore.Client.Models
         [Required]
         public string Size { get; set; }
         
-        public List<string> SelectedToppings { get; set; }
-        public List<string> SelectedToppings2 { get; set; }
+        public List<CheckBoxTopping> SelectedToppings { get; set; }
         [Required]
-        public UserModel User {get;set;}
+        public string User {get;set;}
         [Required]
         public string Store{get;set;}
         public string SelectedPizza{get;set;}
+        public string Topping{get;set;}
 
         public PizzaViewModel(PizzaStoreDBContext dbo)
         {
@@ -42,10 +42,13 @@ namespace PizzaStore.Client.Models
             var sRepo = new SizeRepository(dbo);
             Sizes = sRepo.GetAll();
             var tRepo = new ToppingRepository(dbo);
-            Toppings = tRepo.GetAll();
+            Toppings = new List<ToppingsModel>();
             Toppings2 = new List<CheckBoxTopping>();
+            foreach(ToppingsModel t in tRepo.GetAll()){
+                Toppings.Add(t);
+            }
             foreach(var t in Toppings){
-                Toppings2.Add(new CheckBoxTopping() {Name = t.Name, Id = t.Id,Description = t.Description, Text = t.Name});
+                Toppings2.Add(new CheckBoxTopping() {Name = t.Name, Id = t.Id,Description = t.Description, Text = t.Name, IsSelected = false});
             }
             var uRepo = new UserRepository(dbo);
             Users = uRepo.GetAll();
@@ -53,32 +56,60 @@ namespace PizzaStore.Client.Models
             Stores = stRepo.GetAll();
             var pRepo = new PizzaRepository(dbo);
             SpecialtyPizzas = pRepo.GetAllSpecialty();
+            
         }
         public PizzaViewModel(){}
         public void ConvertRegular(PizzaViewModel pizzaViewModel,PizzaStoreDBContext _db)
         {
+            var UR = new UserRepository(_db);
+            var STR = new StoreRepository(_db);
             var OR = new OrderRepository(_db);
             var CR = new CrustRepository(_db);
             var SR = new SizeRepository(_db);
             var PR = new PizzaRepository(_db);
             var TR = new ToppingRepository(_db);
+            var PF = new PizzaFactory();
             List<ToppingsModel> TM = new List<ToppingsModel>();
-            foreach(var t in pizzaViewModel.SelectedToppings2){
-                TM.Add(TR.Get(t));
+            SelectedToppings = new List<CheckBoxTopping>();
+            
+            foreach(var t in Toppings2)
+            {
+                if(t.IsSelected)
+                {
+                    SelectedToppings.Add(t);
+                }
             }
-            var tempPizza = new PizzaModel(){Name = "custom",Description = "custom",Size = SR.Get(pizzaViewModel.Size),Crust= CR.Get(pizzaViewModel.Crust),Toppings = TM,SpecialPizza = false};
+            foreach(var t in SelectedToppings){
+                var throwaway = TR.Get(t.Text);
+                var tempTopping = new ToppingsModel(){Name = throwaway.Name, Description = throwaway.Description};
+                TM.Add(tempTopping);
+            }
+            
+            //TM.Add(TR.Get(Topping));
+            var tempPizza = PF.Create();
+            tempPizza.Name ="custom";
+            tempPizza.Description = "custom";
+            tempPizza.Size = SR.Get(pizzaViewModel.Size);
+            tempPizza.Crust= CR.Get(pizzaViewModel.Crust);
+            tempPizza.Toppings = new List<ToppingsModel>();
+            tempPizza.Toppings = TM;
+            tempPizza.SpecialPizza = false;
             var cart =OR.GetCurrentOrder();
             var OF = new OrderFactory();
             if(cart != null)
             {
-                cart.Pizzas.Add(tempPizza);
+                OR.AddPizza(cart.Id,tempPizza);
             }
             else
             {
                 cart = OF.Create();
-                cart.CurrentOrder = true;
+                var tempUser = UR.Get(User);
+                UR.AddOrder(tempUser.Id,cart);
+                var tempStore = STR.Get(Store);
+                STR.AddOrder(tempStore.Id,cart);
+                cart.Pizzas = new List<PizzaModel>();
                 cart.Pizzas.Add(tempPizza);
-                OR.Add(cart);
+                OR.UpdateCurrentOrder(cart);
             }
             PR.Add(tempPizza);
         }
@@ -89,21 +120,41 @@ namespace PizzaStore.Client.Models
             var PR = new PizzaRepository(_db);
             var TR = new ToppingRepository(_db);
             var OR = new OrderRepository(_db);
+            var UR = new UserRepository(_db);
+            var STR = new StoreRepository(_db);
             var PF = new PizzaFactory();
             var tempSpecialty = PF.Create();
             tempSpecialty = PR.Get(SelectedPizza);
-            var tempPizza = new PizzaModel(){Name = SelectedPizza,Description = tempSpecialty.Description,Size = SR.Get(pizzaViewModel.Size),Crust= CR.Get(pizzaViewModel.Crust),Toppings = tempSpecialty.Toppings,SpecialPizza = true};
+            var tempPizza = PF.Create();
+            tempPizza.Name = SelectedPizza ;
+            tempPizza.Description = tempSpecialty.Description;
+            tempPizza.Size = SR.Get(pizzaViewModel.Size);
+            tempPizza.Crust= CR.Get(pizzaViewModel.Crust);
+            tempPizza.Toppings = new List<ToppingsModel>();
+            tempPizza.SpecialPizza = true;
+            
+            foreach(var t in tempSpecialty.Toppings)
+            {
+                var tempTopping = new ToppingsModel(){Name = t.Name, Description = t.Description};
+                tempPizza.Toppings.Add(tempTopping);
+                TR.Add(tempTopping);
+            }
+            
             var cart =OR.GetCurrentOrder();
             var OF = new OrderFactory();
             if(cart != null)
             {
-                cart.Pizzas.Add(tempPizza);
+                OR.AddPizza(cart.Id,tempPizza);
             }
             else
             {
                 cart = OF.Create();
+                var tempUser = UR.Get(User);
+                UR.AddOrder(tempUser.Id,cart);
+                var tempStore = STR.Get(Store);
+                STR.AddOrder(tempStore.Id,cart);
                 cart.Pizzas.Add(tempPizza);
-                OR.Add(cart);
+                OR.UpdateCurrentOrder(cart);
             }
             PR.Add(tempPizza);
         }
@@ -128,11 +179,16 @@ namespace PizzaStore.Client.Models
             Cart.CurrentOrder =false;
 
         }
+        
     }
 
     public class CheckBoxTopping : ToppingsModel
     {
         public string Text { get; set; }
         public bool IsSelected { get; set; }
+        public override string ToString() 
+        {
+            return $"{Name}";
+        }
     }
 }

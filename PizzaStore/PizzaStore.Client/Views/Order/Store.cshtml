@@ -3,25 +3,22 @@
  
 @using(Html.BeginForm("PlaceOrderRegular", "Order", null, FormMethod.Post))
 {
-  @if(Model.Crusts != null)
-  {
-    <p>there are crusts</p>
-  }
   @Html.DropDownListFor(m => Model.Crust,new SelectList(Model.Crusts));
 
   @Html.DropDownListFor(m => Model.Size, new SelectList(Model.Sizes));
 
-  foreach (var topping in Model.Toppings2)
+  @for(int i = 0;i<Model.Toppings2.Count;i++)
   {
-    @Html.CheckBoxFor(m => topping.IsSelected, new { name = "selectedtoppings2", value = topping.Text });
-    @Html.DisplayFor(m => topping.Text);
-    @Html.HiddenFor(m => Model.SelectedToppings2)
+    @Html.CheckBoxFor(m => m.Toppings2[i].IsSelected);
+    @Html.DisplayFor(m => m.Toppings2[i].Name);
+    @Html.HiddenFor(m => m.Toppings2[i].Text);
+    
   }
 
+  @Html.DropDownListFor(m => @Model.Topping, new SelectList(Model.Toppings));
   @Html.DropDownListFor(m => @Model.User, new SelectList(Model.Users));
 
   @Html.DropDownListFor(m => @Model.Store, new SelectList(Model.Stores));
-
   <button type="submit">place order</button>
 }
 @using(Html.BeginForm("PlaceOrderSpecial", "Order", null, FormMethod.Post))

@@ -10,7 +10,16 @@ namespace PizzaStore.Domain.Models
         
         public override string ToString()
         {
-            return $"{Name} {Description}";
+            //return $"{Name}: {Description}";
+            return $"{Name}";
+        }
+        public int CalculateSales()
+        {
+            int result = 0;
+            foreach(OrderModel o in Orders){
+                result+= o.CalculatePrice();
+            }
+            return result;
         }
         
     }

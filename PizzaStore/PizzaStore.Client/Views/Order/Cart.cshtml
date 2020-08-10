@@ -3,6 +3,7 @@
 {
     <p>@p.ToString()</p>
 }
+<p>@Model.Cart.CalculatePrice()</p>
 @using(Html.BeginForm("FinishOrder", "Order", null, FormMethod.Post))
 {
   <button type="submit">Finish order</button>

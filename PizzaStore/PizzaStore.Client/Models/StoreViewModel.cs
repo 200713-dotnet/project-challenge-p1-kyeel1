@@ -32,10 +32,5 @@ namespace PizzaStore.Client.Models
             SR.Add(Store);
 
         }
-        public bool CheckCurrentStore(PizzaStoreDBContext _db)
-        {
-            var SR = new StoreRepository(_db);
-            return SR.CheckCurrentStore();
-        }
     }
 }

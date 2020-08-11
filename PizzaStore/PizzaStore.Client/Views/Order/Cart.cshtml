@@ -8,3 +8,15 @@
 {
   <button type="submit">Finish order</button>
 }
+@using(Html.BeginForm("DeletePizza", "Order", null, FormMethod.Post))
+{
+  @for(int i = 0;i<Model.Pizzas.Count;i++)
+  {
+    @Html.CheckBoxFor(m => m.Pizzas[i].IsSelected);
+    @Html.DisplayFor(m => m.Pizzas[i].Id);
+    @Html.HiddenFor(m => m.Pizzas[i].Id);
+    
+  }
+
+  <button type="submit">Delete Pizza</button>
+}

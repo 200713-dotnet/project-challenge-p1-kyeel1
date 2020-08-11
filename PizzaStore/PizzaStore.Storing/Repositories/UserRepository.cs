@@ -35,21 +35,10 @@ namespace PizzaStore.Storing
         {
             return _db.Users.ToList();
         }
-        public bool CheckCurrentUser()
-        {
-            var UserList = _db.Users;
-            if(UserList.FirstOrDefault(user => user.CurrentUser ==true) != null){
-            return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
         public UserModel GetCurrentUser()
         {
             var UserList = _db.Users.Include(orders => _db.Orders.ToList()).Include(pizzas => _db.Pizzas.ToList()).Include(size => _db.Sizes.ToList()).Include(crust => _db.Crusts.ToList()).Include(toppings => _db.Toppings.ToList()).ToList();
-            var query = UserList.First(user => user.CurrentUser ==true);
+            var query = UserList.FirstOrDefault(user => user.CurrentUser ==true);
 
             return query;
         }

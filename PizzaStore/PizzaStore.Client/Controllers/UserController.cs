@@ -24,8 +24,8 @@ namespace PizzaStore.Client.Controllers
         public IActionResult Get()
         {
             var UM =new UserViewModel(_db);
-            if(UM.CheckCurrentUser(_db)){
-                UM.GetCurrentUser(_db);
+            if(UM.GetCurrentUser(_db) != null){
+                UM.User = UM.GetCurrentUser(_db);
                 return View("UserInfo",UM);
             }
             else{

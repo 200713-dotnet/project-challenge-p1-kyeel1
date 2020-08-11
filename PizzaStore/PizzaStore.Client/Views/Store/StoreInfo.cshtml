@@ -2,10 +2,14 @@
 <h1>Hello @Model.Store.Name</h1>
 <h1>This is you home page where you can view Store info</h1>
 @foreach(var o in @Model.Store.Orders){
-    <p>@o.Id</p>
+    <p>Order #:@o.Id</p>
     @foreach (var p in o.Pizzas)
     {
         <p>@p.ToString()</p>
     }
+    <p>$ @o.CalculatePrice()</p>
+
+    
 
 }
+<h1>@Model.Store.Name has made $ @Model.Store.CalculateSales() so far</h1>

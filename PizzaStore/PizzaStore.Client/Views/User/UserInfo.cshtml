@@ -3,12 +3,12 @@
 <h1>This is you home page where you can view past orders</h1>
 @if(Model.User.Orders != null){
 @foreach(var o in @Model.User.Orders){
-    <p>@o.Id</p>
+    <p>Order #:@o.Id</p>
     @foreach (var p in o.Pizzas)
     {
         <p>@p.ToString()</p>
     }
-    <p>@o.CalculatePrice()</p>
+    <p>$ @o.CalculatePrice()</p>
 
 }
 }

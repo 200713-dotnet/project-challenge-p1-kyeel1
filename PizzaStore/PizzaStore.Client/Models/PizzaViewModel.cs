@@ -1,6 +1,7 @@
 using PizzaStore.Domain.Factory;
 using PizzaStore.Domain.Models;
 using PizzaStore.Storing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,6 +17,7 @@ namespace PizzaStore.Client.Models
         public List<UserModel> Users{get;set;}
         public List<StoreModel> Stores{get;set;}
         public List<PizzaModel> SpecialtyPizzas {get;set;}
+        public List<CheckBoxPizza> Pizzas{get;set;}
         public OrderModel Cart {get;set;}
 
 
@@ -28,6 +30,7 @@ namespace PizzaStore.Client.Models
         public string Size { get; set; }
         
         public List<CheckBoxTopping> SelectedToppings { get; set; }
+
         [Required]
         public string User {get;set;}
         [Required]
@@ -56,6 +59,16 @@ namespace PizzaStore.Client.Models
             Stores = stRepo.GetAll();
             var pRepo = new PizzaRepository(dbo);
             SpecialtyPizzas = pRepo.GetAllSpecialty();
+            Pizzas = new List<CheckBoxPizza>();
+            GetCart(dbo);
+            if(Cart != null){
+            foreach(PizzaModel p in Cart.Pizzas)
+            {
+                Pizzas.Add(new CheckBoxPizza() {Name = p.Name, Id = p.Id,Description = p.Description, Text = p.Name, IsSelected = false});
+            }
+            }
+            
+
             
         }
         public PizzaViewModel(){}
@@ -160,6 +173,20 @@ namespace PizzaStore.Client.Models
                 
             }
         }
+
+        public void ConvertDelete(PizzaStoreDBContext db)
+        {
+            var PR = new PizzaRepository(db);
+            foreach(var p in Pizzas)
+            {
+                if(p.IsSelected){
+                    PR.Remove(p.Id);
+                }
+            }
+            
+            
+        }
+
         public void GetCart(PizzaStoreDBContext _db)
         {
             var OF = new OrderFactory();
@@ -186,6 +213,15 @@ namespace PizzaStore.Client.Models
     }
 
     public class CheckBoxTopping : ToppingsModel
+    {
+        public string Text { get; set; }
+        public bool IsSelected { get; set; }
+        public override string ToString() 
+        {
+            return $"{Name}";
+        }
+    }
+    public class CheckBoxPizza : PizzaModel
     {
         public string Text { get; set; }
         public bool IsSelected { get; set; }

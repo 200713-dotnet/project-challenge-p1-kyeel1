@@ -103,7 +103,13 @@ namespace PizzaStore.Client.Controllers
             PVM.FinishOrder(_db);
             return View("Store",new PizzaViewModel(_db));
         }
-
+        [HttpPost]
+        public IActionResult DeletePizza(PizzaViewModel PVM)
+        {
+            
+            PVM.ConvertDelete(_db);
+            return Redirect("cart");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

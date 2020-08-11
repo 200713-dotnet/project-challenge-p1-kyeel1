@@ -10,6 +10,7 @@ namespace PizzaStore.Client.Models
     {
         public StoreModel Store{get;set;}
         private PizzaStoreDBContext _db;
+        public int Prices{get;set;}
         public StoreViewModel(PizzaStoreDBContext dbo)
         {
             var SF = new StoreFactory();
@@ -32,5 +33,5 @@ namespace PizzaStore.Client.Models
             SR.Add(Store);
 
         }
-    }
+}
 }

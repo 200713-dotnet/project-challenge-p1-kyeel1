@@ -32,10 +32,5 @@ namespace PizzaStore.Client.Models
             UR.Add(User);
 
         }
-        public bool CheckCurrentUser(PizzaStoreDBContext _db)
-        {
-            var UR = new UserRepository(_db);
-            return UR.CheckCurrentUser();
-        }
     }
 }

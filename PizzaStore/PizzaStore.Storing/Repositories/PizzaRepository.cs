@@ -31,7 +31,9 @@ namespace PizzaStore.Storing
 
         public PizzaModel Get(int id)
         {
-            return _db.Pizzas.Find(id);
+            var pizzaList = _db.Pizzas.Include(size => _db.Sizes.ToList()).Include(crust => _db.Crusts.ToList()).Include(toppings => _db.Toppings.ToList());
+
+            return pizzaList.FirstOrDefault(pizza => pizza.Id == id);
         }
         public List<PizzaModel> GetAllSpecialty()
         {
@@ -42,5 +44,28 @@ namespace PizzaStore.Storing
             return _db.Pizzas.Include(size => _db.Sizes.ToList()).Include(crust => _db.Crusts.ToList()).Include(toppings => _db.Toppings.ToList()).ToList();
 
         }
+        public void Remove(int id){
+            var pizza = Get(id);
+            if(pizza.Toppings != null){
+            foreach(ToppingsModel t in pizza.Toppings)
+            {
+                _db.Toppings.Remove(t);
+            }
+            }
+            _db.Pizzas.Remove(pizza);
+            _db.SaveChanges();
+        }
+        public void Remove(string name)
+        {
+            var pizza = Get(name);
+            foreach(ToppingsModel t in pizza.Toppings)
+            {
+                _db.Toppings.Remove(t);
+            }
+            _db.Pizzas.Remove(pizza);
+            _db.SaveChanges();
+
+        }
+
     }
 }

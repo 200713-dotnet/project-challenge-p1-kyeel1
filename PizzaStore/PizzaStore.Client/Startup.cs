@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,8 @@ namespace PizzaStore.Client
 {
     public class Startup
     {
+        //private static readonly SqliteConnection _connection = new SqliteConnection("Data Source=:memory:");
+        //private static readonly DbContextOptions<PizzaStoreDBContext> _options = new DbContextOptionsBuilder<PizzaStoreDBContext>().UseSqlite(_connection).Options; 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;

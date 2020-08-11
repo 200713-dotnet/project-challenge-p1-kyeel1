@@ -20,7 +20,7 @@ namespace PizzaStore.Client.Controllers
             _db = dbContext;
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult StoreInfo()
         {
             var SM =new StoreViewModel(_db);
             
@@ -31,6 +31,11 @@ namespace PizzaStore.Client.Controllers
             else{
                 return View("StoreLogIn",new StoreViewModel(_db));
             }
+        }
+        [HttpGet]
+        public IActionResult StoreLogIn()
+        {
+            return View("StoreLogIn",new StoreViewModel(_db));
         }
         [HttpPost]
         public IActionResult LogIn(StoreViewModel SVM)

@@ -61,7 +61,7 @@ namespace PizzaStore.Client.Models
             SpecialtyPizzas = pRepo.GetAllSpecialty();
             Pizzas = new List<CheckBoxPizza>();
             GetCart(dbo);
-            if(Cart != null){
+            if(Cart.Pizzas != null){
             foreach(PizzaModel p in Cart.Pizzas)
             {
                 Pizzas.Add(new CheckBoxPizza() {Name = p.Name, Id = p.Id,Description = p.Description, Text = p.Name, IsSelected = false});

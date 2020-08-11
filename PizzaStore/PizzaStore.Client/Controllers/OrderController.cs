@@ -66,12 +66,14 @@ namespace PizzaStore.Client.Controllers
 
             return View("Store",new PizzaViewModel(_db));
         }
+        /*
         [HttpGet]
         public IActionResult Cart(){
             var PVM = new PizzaViewModel(_db);
             PVM.GetCart(_db);
             return View("Cart",PVM);
          }
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult PlaceOrderRegular(PizzaViewModel pizzaViewModel)
